@@ -1,0 +1,150 @@
+<!-- Filter Datatables -->
+<section id="ngx-datatable-filter">
+  <div class="row">
+    <div class="col-12">
+      <!-- Filter starts -->
+      <div class="users-list-filter px-2">
+        <form>
+          <div class="row border rounded py-2 mb-2 mx-n2">
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="users-list-status" >Status</label>
+              <fieldset class="form-group">
+                <select id="users-list-status" disable class="form-control"
+                [attr.disabled]="true">
+                  <option value="">Todos</option>
+                  <option value="Active">Active</option>
+                  <option value="Close">Close</option>
+                  <option value="Banned">Banned</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="users-list-role">CREADO POR</label>
+              <fieldset class="form-group">
+                <select id="users-list-role" class="form-control"
+                [attr.disabled]="true">
+                  <option value="">Todos</option>
+                  <option value="User">User</option>
+                  <option value="Staff">Staff</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <label for="users-list-verified">ASIGNADO A</label>
+              <fieldset class="form-group">
+                <select id="users-list-verified" class="form-control"
+                [attr.disabled]="true">
+                  <option value="">Todos</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </fieldset>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <!-- Filter ends -->
+    </div>
+    <div class="col-12" *ngIf="rows">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <!-- ngx-datatable-filter -->
+            <fieldset class="form-group">
+              <label>MOSTRAR
+                <select name="users-list-select"
+                  class="form-control form-control-sm d-inline-block width-100 p-right-25 pl-4 mx-1"
+                  (click)="updateLimit($event)">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                ENTRADAS</label>
+              <label for="ngx-filter-ref" class="float-right">BUSCAR:
+                <input id="ngx-filter-ref" class="form-control form-control-sm d-inline-block width-200 ml-1"
+                  type="text" (keyup)="filterUpdate($event)" />
+              </label>
+            </fieldset>
+
+            <ngx-datatable class="bootstrap core-bootstrap table-responsive" [rows]="rows" [columnMode]="ColumnMode.force"
+              [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="limitRef" [scrollbarH]="true">
+              <ngx-datatable-column name="CORPORATIVO" prop="S_BDName" [width]="220">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <div class="d-flex align-items-start ">
+                      <img class=" mt-1" src="{{row.S_LogoURL
+                      }}" height="32" width="32"  />
+
+                      <ul class="">
+                        <li class="" style="list-style: none; font-size: 17px; color: #924BFF;">
+                          <a [routerLink]="['/corporativos/detalle',row.id]"><span class="cursor-pointer">{{ row.S_DBName }}</span></a>
+                        </li>
+                        <li class="corporativo text-secondary" style="list-style: none;">
+                          <span class="ml-0">{{ row.S_NombreCompleto }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="URL" [width]="220">
+                <ng-template let-row="row" prop="S_SystemUrl" ngx-datatable-cell-template>
+                  <li style="list-style: none;"><a href="devschoolcloud.com/sa/#/{{row.S_SystemUrl}}"
+                      target="_blank">devschoolcloud.com/sa/#/{{row.S_SystemUrl}}</a></li>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="INCORPORACIÓN" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.D_FechaIncorporacion | date: 'dd/MM/yyyy'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="CREADO EL"[width]="220">
+                <ng-template let-row="row"  ngx-datatable-cell-template>
+                  <div class="d-flex  d-flex align-items-start">
+                    <ul class="p-0">
+                      <li class="" style="list-style: none;" >
+                        {{row.asignado.created_at | date: 'dd-MMMM-yyyy'}}
+                      </li>
+                      <li class="text-secondary" style="list-style: none;">
+                        {{row.asignado.S_Nombre}}
+                      </li>
+
+                    </ul>
+
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="ASIGNADO A" prop="asignado.S_Nombre" >
+
+              </ngx-datatable-column>
+
+              <ngx-datatable-column name="STATUS" prop="S_Activo" >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+
+                  <ng-container *ngIf="row.S_Activo==1; else elseTemplate">
+                    <span class="rounded p-1" style="background-color: #E4FCD9; color: #6BC65D;">Activo</span>
+                  </ng-container>
+                  <ng-template #elseTemplate>
+
+                    <span class="rounded p-1" style="background-color: #924BFF; color: #ffff;">Inactivo</span>
+                  </ng-template>
+
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="ACCIONES" >
+                <ng-template  let-row="row" ngx-datatable-cell-template>
+                  <a [routerLink]="['/corporativos/detalle',row.id]"><i class="ft-eye text-info cursor-pointer"
+                    style="font-size: large;"></i></a>
+                  <i class="ft-check-circle text-dark cursor-pointer ml-2" style="font-size: large;"></i>
+                </ng-template>
+
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Filter Datatables -->

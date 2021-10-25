@@ -1,0 +1,404 @@
+<div class="d-flex justify-content-center">
+  <section class="users-edit col-md-11 col-sm-12">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-body">
+              <!-- Nav-tabs -->
+              <ul
+                ngbNav
+                #nav="ngbNav"
+                [activeId]="1"
+                class="nav-tabs justify-content-left"
+              >
+                <li [ngbNavItem]="1">
+                  <a ngbNavLink class="nav-link d-flex align-items-center">
+                    <i class="ft-user mr-1"></i>
+                    <span class="d-none d-sm-block">Datos Generales</span>
+                  </a>
+                  <ng-template ngbNavContent>
+                    <!-- Account content starts -->
+                    <div class="mt-2" id="generales">
+                      <!-- Media object starts -->
+                      <div class="media" *ngIf="corporativosDetalle">
+                        <img
+                          src="{{ corporativosDetalle.S_LogoURL }}"
+                          alt="user edit avatar"
+                          class="users-avatar-shadow avatar mr-3 rounded-circle"
+                          height="64"
+                          width="64"
+                        />
+                        <div class="media-body">
+                          <h4>{{ corporativosDetalle.S_NombreCorto }}</h4>
+                        </div>
+                      </div>
+                      <!-- Media object ends -->
+
+                      <!-- Account form starts -->
+                      <form
+                        novalidate
+                        class="mt-5"
+                        [formGroup]="formDetalle"
+                        (ngSubmit)="editar()"
+                      >
+                        <div class="row" *ngIf="corporativosDetalle">
+                          <div class="col-12 col-md-3">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username"
+                                  >NOMBRE CORTO *</label
+                                >
+                                <input
+                                  type="text"
+                                  id="users-edit-username"
+                                  class="form-control"
+                                  placeholder="Username"
+                                  formControlName="nombreCorto"
+                                  required
+                                  [attr.disabled]="
+                                    formDeshabilitado ? true : null
+                                  "
+                                />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="corporativo-edit-fecha"
+                                  >FECHA DE INCORPORACION *</label
+                                >
+                                <input
+                                  type="datetime-local"
+                                  id="corporativo-edit-fecha"
+                                  class="form-control"
+
+                                  required
+
+                                  formControlName="fecha"
+                                  [readonly]="formDeshabilitado"
+
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-12 col-md-6">
+                            <div class="form-group">
+                              <div class="controls">
+                                <label for="users-edit-username"
+                                  >NOMBRE COMPLETO
+                                </label>
+                                <input
+                                  type="text"
+                                  id="users-edit-username"
+                                  class="form-control"
+                                  placeholder="Username"
+                                  formControlName="nombreCompleto"
+                                  required
+                                  [attr.disabled]="
+                                    formDeshabilitado ? true : null
+                                  "
+                                />
+                              </div>
+                            </div>
+
+                            <div class="form-group col-12 col-md-6 p-0">
+                              <div class="controls">
+                                <label for="users-edit-company"
+                                  >URL DEL SISTEMA *</label
+                                >
+                                <input
+                                  type="text"
+                                  id="users-edit-company"
+                                  class="form-control"
+                                  placeholder="Company Name"
+                                  formControlName="urlSis"
+                                  [attr.disabled]="
+                                    formDeshabilitado ? true : null
+                                  "
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-3">
+                            <div class="controls">
+                              <label for="users-edit-status">Status</label>
+                              <select
+                                id="users-edit-status"
+                                class="form-control"
+                                formControlName="status"
+                                [attr.disabled]="
+                                  formDeshabilitado ? true : null
+                                "
+                              >
+                                <option value=""></option>
+                                <option value="0">Inactivo</option>
+                                <option value="1">Activo</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div
+                            class="
+                              col-12
+                              d-flex
+                              justify-content-end
+                              flex-sm-row
+                              mt-3 mt-sm-2
+                            "
+                          >
+                            <ul class="list-inline m-0">
+                              <li class="list-inline-item">
+                                <button
+                                  type="button"
+                                  class="btn btn-secondary"
+                                  (click)="backCorporativos()"
+                                >
+                                  Regresar
+                                </button>
+                              </li>
+                              <li class="list-inline-item"
+                              *ngIf="showBtnCorporativo==false">
+                                <button
+                                  type="button"
+                                  class="btn"
+                                  style="background-color: #8543e2"
+                                  (click)="editar()"
+                                >
+                                  Editar
+                                </button>
+                              </li>
+                              <li
+                                class="list-inline-item"
+                                *ngIf="showBtnCorporativo == true"
+                              >
+                                <button
+                                  type="submit"
+                                  class="btn"
+                                  style="background-color: #8543e2"
+                                (click)="updateCorporativo()">
+                                  Guardar Cambios
+                                </button>
+                              </li>
+                            </ul>
+                            <!-- <button type="submit" class="btn btn-primary mb-2 mb-sm-0 mr-sm-2">Regresar</button> -->
+                          </div>
+                        </div>
+                      </form>
+
+                      <!-- Account form ends -->
+                    </div>
+
+                    <!-- Account content ends -->
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                  <a ngbNavLink class="nav-link d-flex align-items-center">
+                    <i class="ft-info mr-1"></i>
+                    <span class="d-none d-sm-block">Contactos</span>
+                  </a>
+
+                  <ng-template ngbNavContent
+                    ><!--inicio dle content-->
+                    <div class="row mt-2">
+                      <div class="table-responsive">
+                        <table class="table table-striped">
+                          <thead style="background-color: #dbdbdb">
+                            <tr class="">
+                              <th scope="col">NOMBRE</th>
+                              <th scope="col">PUESTO</th>
+                              <th scope="col">TELEFONO</th>
+                              <th scope="col">CELULAR</th>
+                              <th scope="col">EMAIL</th>
+                              <th scope="col">OBSERVACIONES</th>
+                              <th scope="col">ACCIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody *ngFor="let item of rows">
+                            <tr>
+                              <th scope="row">{{ item.S_Nombre }}</th>
+                              <td>{{ item.S_Puesto }}</td>
+                              <td>{{ item.N_TelefonoFijo }}</td>
+                              <td>{{ item.N_TelefonoMovil }}</td>
+                              <td>{{ item.S_Email }}</td>
+                              <td>{{ item.S_Comentarios }}</td>
+                              <td>
+                                <ul class="list-inline m-0">
+                                  <li class="list-inline-item">
+                                    <i
+                                      class="fa fa-edit cursor-pointer"
+                                      (click)="loadFormulario(item)"
+                                    ></i>
+                                  </li>
+                                  <li class="list-inline-item">
+                                    <i
+                                      class="fa fa-trash cursor-pointer"
+                                      (click)="deleteOneContacto(item)"
+                                    ></i>
+                                  </li>
+                                </ul>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <!-- Information content starts -->
+                    <div class="mt-2" id="contacto">
+                      <!-- Information form starts -->
+                      <form
+                        novalidate
+                        [formGroup]="formConctato"
+                        (ngSubmit)="createContacto()"
+                      >
+                        <div class="row">
+                          <div class="col-12 col-md-3 mb-4 mb-md-0">
+                            <div class="form-group">
+                              <label for="users-edit-twitter">NOMBRE</label>
+                              <input
+                                type="text"
+                                id="users-edit-twitter"
+                                class="form-control"
+                                formControlName="nombre"
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="users-edit-facebook"
+                                >TELEFONO FIJO</label
+                              >
+                              <input
+                                type="text"
+                                id="users-edit-facebook"
+                                class="form-control"
+                                formControlName="telefojoFijo"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="col-12 col-md-3 mb-2 mb-md-0">
+                            <div class="form-group">
+                              <div class="controls position-relative">
+                                <label for="users-edit-bday">PUESTO</label>
+                                <input
+                                  type="text"
+                                  id="users-edit-bday"
+                                  class="form-control birthdate-picker"
+                                  required
+                                  formControlName="puesto"
+                                />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="controls position-relative">
+                                <label for="users-edit-bday"
+                                  >TELEFONO MOVIL</label
+                                >
+                                <input
+                                  type="text"
+                                  id="users-edit-bday"
+                                  class="form-control birthdate-picker"
+                                  required
+                                  formControlName="celular"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <div class="form-group">
+                              <div class="controls position-relative">
+                                <label for="users-edit-bday">COMENTARIOS</label>
+                                <input
+                                  type="text"
+                                  id="users-edit-bday"
+                                  class="form-control birthdate-picker"
+                                  required
+                                  formControlName="comentario"
+                                />
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="form-group col-12 col-md-6">
+                                <div class="controls position-relative">
+                                  <label for="users-edit-bday">EMAIL</label>
+                                  <input
+                                    type="text"
+                                    id="users-edit-bday"
+                                    class="form-control birthdate-picker"
+                                    required
+                                    formControlName="email"
+                                  />
+                                </div>
+                              </div>
+
+                              <!-- <div class="col-12 col-md-6 d-flex justify-content-start  p-3">
+                                  <button type="submit" class="btn btn-primary" style="width: 70%;">Save Changes</button>
+                                  <button type="reset" class="btn btn-secondary">Cancel</button>
+                                </div> -->
+                              <ul class="list-inline m-0 col-12 col-md-6">
+                                <li
+                                  class="list-inline-item"
+                                  *ngIf="show == false"
+                                  style="margin-top: 30px"
+                                >
+                                  <button
+                                    type="submit"
+                                    class="btn btn-sm"
+                                    data-toggle="modal"
+                                    data-target=".bd-example-modal-sm"
+                                  >
+                                    <span>AGREGAR CONTACTO</span>
+                                  </button>
+                                </li>
+                                <li
+                                  class="list-inline-item"
+                                  *ngIf="show == true"
+                                  style="margin-top: 30px"
+                                >
+                                  <button
+                                    type="button"
+                                    class="btn btn-sm rounded"
+                                    data-toggle="modal"
+                                    (click)="updateContacto()"
+                                    data-target=".bd-example-modal-sm"
+                                    style="width: 100%; height: 50%"
+                                  >
+                                    <span>ACTUALIZAR CONTACTO</span>
+                                  </button>
+                                </li>
+                                <li
+                                  class="list-inline-item mt-3"
+                                  *ngIf="show == true"
+                                  style="margin-top: 30px"
+                                >
+                                  <button
+                                    type="button"
+                                    class="btn btn-sm"
+                                    data-toggle="modal"
+                                    data-target=".bd-example-modal-sm"
+                                    (click)="cancel()"
+                                  >
+                                    <span>CANCELAR</span>
+                                  </button>
+                                </li>
+                              </ul>
+
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <!-- Information form ends -->
+                    </div>
+                    <!-- Information content ends -->
+                  </ng-template>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div [ngbNavOutlet]="nav"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
