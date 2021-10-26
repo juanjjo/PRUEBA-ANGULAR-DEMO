@@ -98,19 +98,31 @@ export class CorporativosDetalleComponent implements OnInit {
    this.corporativo.FK_Asignado_id=this.corporativosDetalle.FK_Asignado_id;
    this.corporativo.id=this.corporativosDetalle.id;
   }
+
   loadFormDetalle():any{
-    let docDate = 'Jun 15, 2015, 21:43:11 UTC';
-    this.currentDate=new Date(this.corporativosDetalle.created_at);
-    this.currentDate.getDate()+"-"+this.currentDate.getMonth()+"-"+this.currentDate.getFullYear();
+      this.currentDate=new Date(this.corporativosDetalle.D_FechaIncorporacion);
       this.formDetalle.patchValue({
       nombreCorto:this.corporativosDetalle.S_NombreCorto,
-      fecha: new Date(this.corporativosDetalle.D_FechaIncorporacion).toISOString().slice(0, -1),
+      fecha: this.formatFecha(this.currentDate),
       nombreCompleto:this.corporativosDetalle.S_NombreCompleto,
       urlSis:this.corporativosDetalle.S_LogoURL,
       status:this.corporativosDetalle.S_Activo
     });
 
   }
+
+  public  formatFecha(fecha:Date) {
+   let dia = fecha.getDate();
+   let  mes:number = fecha.getMonth()+1;
+   if(mes>0 && mes<10){
+     let mesString = ("0"+mes.toString());
+    let anio = fecha.getFullYear();
+    return anio.toString()+"-"+mesString.toString()+"-"+dia.toString();
+    }
+    return fecha.toLocaleDateString();
+  }
+
+
   updateCorporativo(){
     let ll:string=new Date(this.formDetalle.value.fecha).toISOString().slice(0, -1);
     let ft:string=ll.slice(0,4)+"-"+ll.slice(5,7)+"-"+ll.slice(8,10);
@@ -150,6 +162,7 @@ export class CorporativosDetalleComponent implements OnInit {
     });
     this.show=true;
   }
+
 /**
  * crea un nuevo contacto
  */
@@ -194,7 +207,7 @@ export class CorporativosDetalleComponent implements OnInit {
         alert("a ocurrido un error");
       }
     )
- 
+
   }
 
 
@@ -226,7 +239,7 @@ export class CorporativosDetalleComponent implements OnInit {
         alert("a ocurrido un error");
       }
     )
-    
+
     this.contacto = new Contacto();
   }
 
