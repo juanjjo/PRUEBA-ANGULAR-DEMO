@@ -80,4 +80,5 @@ export class CorporativosComponent implements OnInit {
     let location = window.location;
     location.href = 'http://localhost:4200/#/corporativos/detalle';
   }
+
 }

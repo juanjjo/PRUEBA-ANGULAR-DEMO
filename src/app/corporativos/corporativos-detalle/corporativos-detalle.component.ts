@@ -171,12 +171,12 @@ export class CorporativosDetalleComponent implements OnInit {
     this.loadContacto();
     this.serviceContacto.saveContacto(this.contacto).subscribe(
       (result)=>{
+        this.getContactosCorporativo();
       },
       (error)=>{
         alert("a ocurrido un error");
       }
     )
-    this.getContactosCorporativo();
     this.contacto = new Contacto();
   }
 /**
@@ -188,11 +188,13 @@ export class CorporativosDetalleComponent implements OnInit {
     let id:number = this.itemTabla.id;
     this.serviceContacto.deleteContacto(id).subscribe(
       (result)=>{
+        this.getContactosCorporativo();
       },
       (error)=>{
+        alert("a ocurrido un error");
       }
     )
-    this.getContactosCorporativo();
+ 
   }
 
 
@@ -218,11 +220,13 @@ export class CorporativosDetalleComponent implements OnInit {
     this.loadContacto();
     this.serviceContacto.updateContacto(this.itemTabla.id,this.contacto).subscribe(
       (result)=>{
+        this.getContactosCorporativo();
       },
       (error)=>{
+        alert("a ocurrido un error");
       }
     )
-    this.getContactosCorporativo();
+    
     this.contacto = new Contacto();
   }
 
