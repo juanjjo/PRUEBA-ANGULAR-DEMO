@@ -30,7 +30,6 @@ export class CorporativosComponent implements OnInit {
       await this.corporativoService.getListCoporativos().subscribe(
         (result) => {
           this.rows = result['data'];
-          console.log(this.rows);
         }
        )
      } catch (error) {
@@ -42,7 +41,6 @@ export class CorporativosComponent implements OnInit {
   ngOnInit() {
     this.token = localStorage.getItem('tokenscloud');
     this.getList();
-    console.log(this.rows);
   }
 
   /**

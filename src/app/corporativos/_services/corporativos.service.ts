@@ -49,7 +49,6 @@ export class CorporativosService {
 
 
     updateCorporativo(id:number, corporativo: Corporativo):Observable<any>{
-      console.log("entro");
       const httpOptions = {
         headers : new HttpHeaders({
           "Content-Type": "application/json",
