@@ -82,7 +82,7 @@ export class CorporativosDetalleComponent implements OnInit {
           this.loadFormDetalle();
           this.spinner.hide()
           this.loadCorporativo();
-
+          console.log(this.corporativosDetalle);
         }
        );
     } catch (error) {
@@ -114,12 +114,15 @@ export class CorporativosDetalleComponent implements OnInit {
   public  formatFecha(fecha:Date) {
    let dia = fecha.getDate();
    let  mes:number = fecha.getMonth()+1;
+   let anio = fecha.getFullYear();
    if(mes>0 && mes<10){
      let mesString = ("0"+mes.toString());
-    let anio = fecha.getFullYear();
     return anio.toString()+"-"+mesString.toString()+"-"+dia.toString();
+    }else{
+      let mesString = (mes.toString());
+      return anio.toString()+"-"+mesString.toString()+"-"+dia.toString();
     }
-    return fecha.toLocaleDateString();
+
   }
 
 
@@ -136,6 +139,7 @@ export class CorporativosDetalleComponent implements OnInit {
 
      this.corporativoService.updateCorporativo(this.id,this.corporativo).subscribe(
       (result)=>{
+
       },
       (error)=>{
         alert("a ocurrido un error");
